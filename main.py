@@ -1,3 +1,4 @@
+#https://python-gtk-3-tutorial.readthedocs.io/en/latest/
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -28,20 +29,24 @@ class MainPage(Gtk.Box):
 
         self.set_orientation(Gtk.Orientation.VERTICAL)
 
-        self.button1 = Gtk.Button(label="My First Grammar 1")
-        self.button1.connect("clicked", self.on_button1_clicked)
+        button1Text = "My First Grammar 1"
+        button2Text = "My First Grammar 2"
+        button3Text = "My First Grammar 3"
+        button4Text = "My Next Grammar 1"
+        button5Text = "My Next Grammar 2"
+
+        self.button1 = Gtk.Button(label=button1Text)
+        self.button2 = Gtk.Button(label=button2Text)
+        self.button3 = Gtk.Button(label=button3Text)
+        self.button4 = Gtk.Button(label=button4Text)
+
+        self.button1.connect("clicked", self.on_class_button_clicked, button1Text)
+        self.button2.connect("clicked", self.on_class_button_clicked, button2Text)
+        self.button3.connect("clicked", self.on_class_button_clicked, button3Text)
+        self.button4.connect("clicked", self.on_class_button_clicked, button4Text)
         self.label1 = Gtk.Label()
-
-        self.button2 = Gtk.Button(label="My First Grammar 2")
-        self.button2.connect("clicked", self.on_button2_clicked)
         self.entry2 = Gtk.Entry()
-
-        self.button3 = Gtk.Button(label="My First Grammar 3")
-        self.button3.connect("clicked", self.on_button3_clicked)
         self.entry3 = Gtk.Entry()
-
-        self.button4 = Gtk.Button(label="My Next Grammar 1")
-        self.button4.connect("clicked", self.on_button4_clicked)
         self.entry4 = Gtk.Entry()
 
         self.buttonQuit = Gtk.Button(label="Quit")
@@ -57,20 +62,11 @@ class MainPage(Gtk.Box):
         self.__parent_window.print_page.show_all()
         self.hide()
 
-    def on_button1_clicked(self, widget):
-        print("My First Grammar 1")
-        self.label1.set_label("Changed")
+    def on_class_button_clicked(self, widget, *data):
+        #print("General Button Test")
+        #print(data[0])
+        self.__parent_window.print_page.setTitle(data[0])
         self.show_print_page()
-
-    def on_button2_clicked(self, widget):
-        print("My First Grammar 2")
-
-    def on_button3_clicked(self, widget):
-        print("My First Grammar 3")
-
-    def on_button4_clicked(self, widget):
-        print("My Next Grammar 1")
-
 
     def on_buttonQuit_clicked(self, widget):
         print("Try to exit...")
@@ -90,11 +86,13 @@ class PrintingPage(Gtk.Box):
         self.pack_start(vbox_right, True, True, 0)
 
         self.label1 = Gtk.Label()
-        self.label1.set_label("Lessons")
+        self.title = Gtk.Label()
+        label_text = "Test"
+        self.title.set_label(label_text)
         self.label2 = Gtk.Label()
         self.label2.set_label("Lessons")
         self.entry1 = Gtk.Entry()
-        vbox_left.pack_start(self.label1, True, True, 0)
+        vbox_left.pack_start(self.title, True, True, 0)
         vbox_right.pack_start(self.label2, True, True, 0)
 
         self.buttonQuit = Gtk.Button(label="Quit")
@@ -106,9 +104,17 @@ class PrintingPage(Gtk.Box):
         self.__parent_window.main_page.show_all()
         self.hide()
 
+    def setTitle(self, text):
+        self.title.set_label(text)
+
     def on_buttonQuit_clicked(self, widget):
         print("Try to exit...")
         self.__parent_window.destroy()
+
+class PageData:
+  def __init__(self, title, lesson):
+    self.title = title
+    self.lessons = lessons
 
 if __name__ == '__main__':
     window = MainWindow()
